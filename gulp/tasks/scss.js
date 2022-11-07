@@ -2,26 +2,25 @@ const {src, dest} = require("gulp");
 const path = require("../config/path.js");
 
 // Плагины
-    // make one css file from several
-    const concat = require("gulp-concat");
     // make prefixes for support old browsers
     const autoprefixer = require("gulp-autoprefixer");
     const csso = require("gulp-csso");
     const rename = require("gulp-rename");
     const groupCssMediaQueries = require("gulp-group-css-media-queries");
+    const sass = require("gulp-sass")(require("sass"));
 
 
 // Css build
-const css = () => {
-    return src(path.css.src,{sourcemaps: true}) 
+const scss = () => {
+    return src(path.scss.src,{sourcemaps: true}) 
      // plugins
-    .pipe(concat("main.css"))
+    .pipe(sass())
     .pipe(autoprefixer())
     .pipe(groupCssMediaQueries())
-    .pipe(dest(path.css.dest,{sourcemaps: true}))
+    .pipe(dest(path.scss.dest,{sourcemaps: true}))
     .pipe(rename({suffix: ".min"}))
     .pipe(csso())
-    .pipe(dest(path.css.dest,{sourcemaps: true}))
+    .pipe(dest(path.scss.dest,{sourcemaps: true}))
 }
 
-module.exports = css;
+module.exports = scss;

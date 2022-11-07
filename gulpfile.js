@@ -6,6 +6,8 @@ const path = require("./gulp/config/path.js");
 // Задачи
 const clear = require('./gulp/tasks/clear.js');
 const pug = require('./gulp/tasks/pug.js');
+// const css = require('./gulp/tasks/css.js');
+const scss = require('./gulp/tasks/scss.js');
 
 
 // Плагины
@@ -26,11 +28,15 @@ const server = () =>{
 // watch
 const watcher = () => {
     watch(path.pug.watch, pug).on ("all", browserSync.reload);
+    watch(path.scss.watch, scss).on ("all", browserSync.reload);
 }
+
+// exports.css = css;
+exports.scss = scss;
 
 //Construction
 exports.dev= series(
     clear,
-    pug,
+    parallel(pug, scss),
     parallel(watcher, server)
 );
